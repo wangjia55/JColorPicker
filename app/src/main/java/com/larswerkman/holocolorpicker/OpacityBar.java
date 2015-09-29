@@ -317,7 +317,7 @@ public class OpacityBar extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// Draw the bar.
-		canvas.drawRect(mBarRect, mBarPaint);
+		canvas.drawRoundRect(mBarRect,30,30, mBarPaint);
 
 		// Calculate the center of the pointer.
 		int cX, cY;
