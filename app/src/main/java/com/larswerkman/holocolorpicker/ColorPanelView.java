@@ -22,8 +22,8 @@ import com.jacob.color.picker.R;
 public class ColorPanelView extends View {
     private Bitmap mBitmapBg;
     private Bitmap mBitmapThumb;
-    private int width;
-    private int height;
+    private int mPanelWidth;
+    private int mPanelHeight;
     private int thumbWidth;
     private int thumbHeight;
 
@@ -32,7 +32,8 @@ public class ColorPanelView extends View {
 
     private float startX;
     private float startY;
-    private int saturation = 50;
+    private int margin;
+    private int mSaturation = 50;
     private OnSaturationListener mSaturationListener;
 
     public ColorPanelView(Context context) {
@@ -47,25 +48,27 @@ public class ColorPanelView extends View {
         super(context, attrs, defStyleAttr);
         mBitmapBg = BitmapFactory.decodeResource(getResources(), R.mipmap.colortemp);
         mBitmapThumb = BitmapFactory.decodeResource(getResources(), R.mipmap.colorthumb);
-        width = mBitmapBg.getWidth();
-        height = mBitmapBg.getHeight();
+        mPanelWidth = mBitmapBg.getWidth();
+        mPanelHeight = mBitmapBg.getHeight();
 
         thumbWidth = mBitmapThumb.getWidth();
         thumbHeight = mBitmapThumb.getHeight();
 
         mBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBitmapPaint.setStrokeCap(Paint.Cap.ROUND);
+        margin = thumbWidth / 2;
+        mRectF = new Rect(margin, margin, mPanelWidth + margin, mPanelHeight + margin);
 
-        mRectF = new Rect(0, 0, width, height);
+        startX = (mPanelWidth + margin * 2) / 2;
+        startY = (mPanelHeight + margin * 2) / 2;
 
-        startX = width / 2;
-        startY = height/ 2;
+
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(mPanelWidth + margin * 2, mPanelHeight + margin * 2);
     }
 
 
@@ -88,25 +91,25 @@ public class ColorPanelView extends View {
             case MotionEvent.ACTION_MOVE:
                 startX = x;
                 startY = y;
-                if (startX < 0) {
-                    startX = 0;
+                if (startX < margin) {
+                    startX = margin;
                 }
 
-                if (startY < 0) {
-                    startY = 0;
+                if (startY < margin) {
+                    startY = margin;
                 }
 
-                if (startX > width) {
-                    startX = width;
+                if (startX > mPanelWidth +margin) {
+                    startX = mPanelWidth +margin;
                 }
 
-                if (startY > height) {
-                    startY = height;
+                if (startY > mPanelHeight +margin) {
+                    startY = mPanelHeight +margin;
                 }
                 invalidate();
-                saturation = (int) ((startX) * 100f / width);
+                mSaturation = (int) ((startX-margin) * 100f / mPanelWidth);
                 if (mSaturationListener != null) {
-                    mSaturationListener.onSaturationChanged(saturation);
+                    mSaturationListener.onSaturationChanged(mSaturation);
                 }
                 break;
         }

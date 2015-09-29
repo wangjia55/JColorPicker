@@ -1,51 +1,39 @@
 package com.jacob.color.picker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-
-import com.larswerkman.holocolorpicker.ColorPicker;
-import com.larswerkman.holocolorpicker.OpacityBar;
-import com.larswerkman.holocolorpicker.SVBar;
-import com.larswerkman.holocolorpicker.SaturationBar;
-import com.larswerkman.holocolorpicker.ValueBar;
+import android.view.View;
 
 
-public class MainActivity extends FragmentActivity {
-
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
-        SVBar svBar = (SVBar) findViewById(R.id.svbar);
-        OpacityBar opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
-        SaturationBar saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
-        ValueBar valueBar = (ValueBar) findViewById(R.id.valuebar);
+        findViewById(R.id.button_a).setOnClickListener(this);
+        findViewById(R.id.button_b).setOnClickListener(this);
+        findViewById(R.id.button_c).setOnClickListener(this);
+    }
 
-        picker.addSVBar(svBar);
-        picker.addOpacityBar(opacityBar);
-        picker.addSaturationBar(saturationBar);
-        picker.addValueBar(valueBar);
-
-//To get the color
-        picker.getColor();
-
-//To set the old selected color u can do it like this
-        picker.setOldCenterColor(picker.getColor());
-// adds listener to the colorpicker which is implemented
-//in the activity
-        picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int color) {
-
-            }
-        });
-
-//to turn of showing the old color
-        picker.setShowOldCenterColor(false);
-
-//adding onChangeListeners to bars
+    @Override
+    public void onClick(View view) {
+        Intent intent = null;
+        switch (view.getId()) {
+            case R.id.button_a:
+                intent = new Intent(MainActivity.this, OfficialActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.button_b:
+                intent = new Intent(MainActivity.this, ColorActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.button_c:
+                intent = new Intent(MainActivity.this, SaturationActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
 }
